@@ -156,5 +156,152 @@ function closeQuiz(){document.getElementById('quiz').classList.remove('show')}
 function addQuizButtons(){document.querySelectorAll('.subject').forEach((card,i)=>{let key=['arabic','english','math','science'][i];let b=document.createElement('button');b.textContent='ابدأ الاختبار 📝';b.style.marginTop='8px';b.style.background='#70e1c1';b.style.color='#10203c';b.style.fontWeight='bold';b.onclick=()=>startQuiz(key);card.appendChild(b)})}
 updateStats();addQuizButtons();
 </script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+// إعدادات مشروع أكاديمية المستقبل
+const firebaseConfig = {
+  apiKey: "AIzaSyCf2...",
+  authDomain: "future-academy-7d59f.firebaseapp.com",
+  projectId: "future-academy-7d59f",
+  storageBucket: "future-academy-7d59f.firebasestorage.app",
+  messagingSenderId: "994383498991",
+  appId: "1:994383498991:web:4f4c72f2f35421bf66d51a",
+  measurementId: "G-K8YKYV9Z0X"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentStudent = null;
+
+// إنشاء حساب طالب
+window.registerStudent = async function(name, email, password) {
+  try {
+    const result = await createUserWithEmailAndPassword(
+      auth, email, password
+    );
+
+    await updateProfile(result.user, {
+      displayName: name
+    });
+
+    await setDoc(doc(db, "users", result.user.uid), {
+      displayName: name,
+      email: email,
+      points: 0,
+      done: 0,
+      total: 0,
+      createdAt: serverTimestamp()
+    });
+
+    alert("تم إنشاء الحساب بنجاح!");
+  } catch (error) {
+    alert("خطأ: " + error.message);
+  }
+};
+
+// تسجيل الدخول
+window.loginStudent = async function(email, password) {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("تم تسجيل الدخول بنجاح!");
+  } catch (error) {
+    alert("خطأ: " + error.message);
+  }
+};
+
+// تسجيل الخروج
+window.logoutStudent = async function() {
+  await signOut(auth);
+};
+
+// متابعة حالة الطالب
+onAuthStateChanged(auth, async (user) => {
+  currentStudent = user;
+
+  if (user) {
+    const ref = doc(db, "users", user.uid);
+    const snapshot = await getDoc(ref);
+
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+
+      if (typeof stats !== "undefined") {
+        stats.points = data.points || 0;
+        stats.done = data.done || 0;
+        stats.total = data.total || 0;
+
+        if (typeof updateStats === "function") {
+          updateStats();
+        }
+      }
+    }
+
+    console.log("تم تسجيل دخول:", user.email);
+  } else {
+    console.log("لا يوجد طالب مسجل الدخول");
+  }
+});
+
+// حفظ إحصائيات الطالب
+window.saveStatsToCloud = async function(data) {
+  if (!auth.currentUser) return;
+
+  try {
+    await setDoc(
+      doc(db, "users", auth.currentUser.uid),
+      {
+        points: data.points || 0,
+        done: data.done || 0,
+        total: data.total || 0
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// حفظ نتيجة الاختبار
+window.saveQuizAttempt = async function(result) {
+  if (!auth.currentUser) return;
+
+  try {
+    await addDoc(
+      collection(db, "users", auth.currentUser.uid, "attempts"),
+      {
+        ...result,
+        createdAt: serverTimestamp()
+      }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+</script>
 </body>
+</html>
+/body>
 </html>
