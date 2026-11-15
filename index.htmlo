@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101a35">
+<meta name="description" content="أكاديمية المستقبل: دروس واختبارات تفاعلية للطلاب مع حساب الدرجات.">
+<title>أكاديمية المستقبل</title>
+<style>
+:root{--bg:#0b1226;--panel:#141f3d;--panel2:#1b2a50;--text:#f4f7ff;--muted:#aab6d3;--accent:#70e1c1;--blue:#7c9cff;--gold:#ffd166;--red:#ff8297}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 10% 0%,#233766 0,transparent 32%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;min-height:100vh}
+.wrap{max-width:980px;margin:auto;padding:18px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 24px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:bold;font-size:19px}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--blue));display:grid;place-items:center;color:#10203c;font-size:23px}
+.pill{background:#1d3158;border:1px solid #344a77;padding:9px 13px;border-radius:30px;color:var(--gold);font-size:13px}
+.hero{background:linear-gradient(120deg,#253d70,#18274b 65%,#163d50);border:1px solid #3b5685;border-radius:25px;padding:25px;display:flex;align-items:center;justify-content:space-between;gap:18px;overflow:hidden}
+.hero h1{font-size:clamp(24px,5vw,36px);margin:0 0 10px}
+.hero p{color:#d0daf1;line-height:1.8;margin:0 0 17px}
+.heroIcon{font-size:76px;filter:drop-shadow(0 8px 15px #08152d)}
+button{border:0;cursor:pointer;font-family:inherit}
+button:disabled{opacity:.5;cursor:not-allowed}
+.mainbtn{background:var(--accent);color:#10203c;font-weight:bold;padding:12px 19px;border-radius:13px}
+.secondary{background:var(--panel2);color:var(--accent);padding:11px 15px;border-radius:11px;font-weight:bold}
+.section{margin-top:27px}
+.sectionHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.section h2{font-size:20px;margin:0}
+.muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.subject{background:var(--panel);border:1px solid #29395e;border-radius:18px;padding:17px 12px;text-align:center;transition:.2s}
+.subject:active{transform:scale(.97)}
+.subject .emoji{font-size:32px}
+.subject h3{font-size:15px;margin:10px 0 5px}
+.subject p{font-size:12px;color:var(--muted);margin:0}
+.subject button{margin-top:13px;background:var(--panel2);color:var(--accent);padding:9px 12px;border-radius:10px;width:100%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{background:var(--panel);padding:16px;border-radius:16px;border:1px solid #29395e}
+.stat strong{display:block;font-size:23px;color:var(--accent);margin-bottom:5px}
+.stat span{font-size:12px;color:var(--muted)}
+.lesson,.quiz{display:none;background:var(--panel);border:1px solid #34466f;border-radius:20px;padding:20px;margin-top:20px}
+.lesson.show,.quiz.show{display:block}
+.lesson h2,.quiz h2{margin-top:0}
+.lessonText{line-height:2;color:#dce5fa}
+.question{background:#1b2a50;padding:16px;border-radius:15px;margin:14px 0}
+.answers{display:grid;gap:9px;margin-top:13px}
+.answer{background:#26385f;color:white;padding:12px;border:1px solid #3c527e;border-radius:11px;text-align:right}
+.answer:hover{border-color:var(--accent)}
+.answer.correct{background:#145342;border-color:var(--accent)}
+.answer.wrong{background:#572c3c;border-color:var(--red)}
+.feedback{min-height:25px;color:var(--gold);font-size:14px;margin-top:12px;line-height:1.7}
+.close{float:left;background:#29395e;color:white;padding:8px 12px;border-radius:9px}
+.progress{height:9px;background:#29395e;border-radius:20px;overflow:hidden;margin-top:10px}
+.progress div{height:100%;width:0;background:var(--accent);transition:.3s}
+.quizTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.quizMeta{color:var(--muted);font-size:13px}
+.quizActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.result{text-align:center;background:#1b2a50;border-radius:16px;padding:20px;margin-top:15px}
+.resultScore{font-size:38px;color:var(--accent);font-weight:bold;margin:8px}
+.result p{line-height:1.8;color:#dce5fa}
+.reviewItem{border-top:1px solid #3c527e;padding:12px 0;text-align:right;line-height:1.8}
+.reviewGood{color:var(--accent)}.reviewBad{color:var(--red)}
+footer{text-align:center;color:#8391b1;font-size:12px;padding:28px 0 10px}
+@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr)}.heroIcon{font-size:54px}.hero{padding:20px}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:20px}}
+@media(max-width:360px){.pill{font-size:11px}.brand{font-size:16px}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand"><div class="logo">🎓</div><span>أكاديمية المستقبل</span></div>
+  <div class="pill">⭐ نقاطك: <b id="points">0</b></div>
+</header>
+
+<section class="hero">
+  <div><h1>اتعلم حاجة جديدة كل يوم!</h1><p>رحلتك للتعلم والنجاح تبدأ من هنا.<br>اختار مادتك وابدأ التحدي.</p>
+  <button class="mainbtn" onclick="document.getElementById('subjects').scrollIntoView({behavior:'smooth'})">ابدأ التعلم ←</button></div>
+  <div class="heroIcon">🚀</div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><h2>📚 المواد الدراسية</h2><span class="muted">اختار مادة للبدء</span></div>
+  <div class="grid" id="subjects">
+    <div class="subject"><div class="emoji">📖</div><h3>اللغة العربية</h3><p>قواعد ومفردات</p><button onclick="openLesson('arabic')">افتح المادة</button></div>
+    <div class="subject"><div class="emoji">🌍</div><h3>اللغة الإنجليزية</h3><p>كلمات وقواعد</p><button onclick="openLesson('english')">افتح المادة</button></div>
+    <div class="subject"><div class="emoji">➗</div><h3>الرياضيات</h3><p>حساب وتفكير</p><button onclick="openLesson('math')">افتح المادة</button></div>
+    <div class="subject"><div class="emoji">🔬</div><h3>العلوم</h3><p>اكتشف العالم</p><button onclick="openLesson('science')">افتح المادة</button></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><h2>🏆 إنجازاتك</h2><span class="muted">النتائج محفوظة على هذا الجهاز</span></div>
+  <div class="stats">
+    <div class="stat"><strong id="done">0</strong><span>إجابات صحيحة</span></div>
+    <div class="stat"><strong id="total">0</strong><span>محاولات</span></div>
+    <div class="stat"><strong id="rate">0%</strong><span>نسبة النجاح</span></div>
+  </div>
+  <div class="progress"><div id="bar"></div></div>
+  <p class="muted" id="savedNote">يتم حفظ النقاط والنتائج على نفس المتصفح.</p>
+</section>
+
+<section class="lesson" id="lesson">
+  <button class="close" onclick="closeLesson()">إغلاق ✕</button>
+  <h2 id="lessonTitle"></h2><p class="lessonText" id="lessonText"></p>
+  <div class="question"><b id="questionText"></b><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div></div>
+  <button class="mainbtn" id="next" onclick="nextQuestion()" style="display:none">السؤال التالي ←</button>
+</section>
+
+<section class="quiz" id="quiz">
+  <button class="close" onclick="closeQuiz()">إغلاق ✕</button>
+  <div class="quizTop"><h2 id="quizTitle">📝 اختبار المادة</h2><span class="quizMeta" id="quizCounter"></span></div>
+  <div class="progress"><div id="quizBar"></div></div>
+  <div class="question" id="quizQuestionBox">
+    <b id="quizQuestion"></b><div class="answers" id="quizAnswers"></div>
+    <div class="feedback" id="quizFeedback"></div>
+  </div>
+  <div class="quizActions">
+    <button class="mainbtn" id="quizNext" onclick="nextQuizQuestion()" disabled>السؤال التالي ←</button>
+  </div>
+  <div id="quizResult"></div>
+</section>
+
+<footer>صُنع بحب للتعلم 💙 · أكاديمية المستقبل</footer>
+</div>
+
+<script>
+const data={
+arabic:{title:'📖 اللغة العربية',text:'التشبيه هو مقارنة شيء بشيء آخر في صفة مشتركة. مثال: الجندي كالأسد في الشجاعة. أركانه: المشبه، والمشبه به، وأداة التشبيه، ووجه الشبه.',q:[['في جملة «الجندي كالأسد»، ما المشبه به؟',['الجندي','الأسد','الكاف'],1],['ما أداة التشبيه في «العلم كالنور»؟',['العلم','النور','الكاف'],2]]},
+english:{title:'🌍 اللغة الإنجليزية',text:'كلمة Apple تعني تفاحة. نستخدم is مع المفرد، مثل: The sky is blue. ونستخدم are مع الجمع، مثل: The books are new.',q:[['ما معنى كلمة Apple؟',['موزة','تفاحة','برتقالة'],1],['اختر الكلمة المناسبة: The sun ___ hot.',['are','am','is'],2]]},
+math:{title:'➗ الرياضيات',text:'لحل المعادلة نحافظ على تساوي الطرفين بإجراء العملية نفسها على كل طرف. مثال: 2x + 6 = 16، نطرح 6 فيصبح 2x = 10، ثم نقسم على 2 فنحصل على x = 5.',q:[['ما ناتج 7 + 5؟',['10','12','13'],1],['حل المعادلة: 3x + 4 = 19',['3','5','7'],1]]},
+science:{title:'🔬 العلوم',text:'النباتات تصنع غذاءها بعملية البناء الضوئي، وتحتاج إلى الماء وثاني أكسيد الكربون وضوء الشمس. وينطلق الأكسجين خلال هذه العملية.',q:[['ما العملية التي يصنع بها النبات غذاءه؟',['التنفس','البناء الضوئي','التبخر'],1],['أي غاز يمتصه النبات في البناء الضوئي؟',['الأكسجين','النيتروجين','ثاني أكسيد الكربون'],2]]}
+};
+const quizBank={
+arabic:[['ما أركان التشبيه الأساسية؟',['المبتدأ والخبر','المشبه والمشبه به والأداة ووجه الشبه','الفعل والفاعل'],1],['في «الفتاة كالقمر»، ما المشبه؟',['الفتاة','القمر','الكاف'],0],['في «العلم نور»، ما وجه الشبه المفهوم؟',['الإضاءة والهداية','السرعة','الصوت'],0],['أي الكلمات التالية أداة تشبيه؟',['من','إلى','كأن'],2],['في «الجندي كالأسد في الشجاعة»، وجه الشبه هو:',['الجندي','الأسد','الشجاعة'],2]],
+english:[['ما معنى كلمة Book؟',['قلم','كتاب','باب'],1],['اختر الصحيح: She ___ a student.',['am','are','is'],2],['ما جمع كلمة Child؟',['Childs','Children','Childes'],1],['ما عكس كلمة Hot؟',['Cold','Tall','Fast'],0],['اختر أداة التعريف المناسبة: ___ sun',['A','An','The'],2]],
+math:[['ما ناتج 8 × 7؟',['54','56','64'],1],['حل: x + 9 = 15',['x = 5','x = 6','x = 7'],1],['ما ناتج 36 ÷ 6؟',['5','6','7'],1],['ما قيمة 3²؟',['6','8','9'],2],['إذا كان 2x = 18 فإن x = ؟',['8','9','10'],1]],
+science:[['ما وحدة بناء الكائن الحي؟',['الخلية','النسيج','العضو'],0],['أي كوكب يُعرف بالكوكب الأحمر؟',['الزهرة','المريخ','المشتري'],1],['ما الحالة التي يكون فيها الماء على هيئة بخار؟',['صلبة','سائلة','غازية'],2],['أي عضو يضخ الدم في جسم الإنسان؟',['الرئة','القلب','المعدة'],1],['ما مصدر الطاقة الرئيسي للأرض؟',['الشمس','القمر','الرياح'],0]]
+};
+const subjectNames={arabic:'اللغة العربية',english:'اللغة الإنجليزية',math:'الرياضيات',science:'العلوم'};
+let current=null,index=0,answered=false,quizSubject=null,quizIndex=0,quizScore=0,quizAnswers=[];
+let stats=loadStats();
+function loadStats(){try{return JSON.parse(localStorage.getItem('futureAcademyStats'))||{points:0,done:0,total:0}}catch(e){return{points:0,done:0,total:0}}}
+function saveStats(){try{localStorage.setItem('futureAcademyStats',JSON.stringify(stats))}catch(e){}}
+function updateStats(){document.getElementById('points').textContent=stats.points;document.getElementById('done').textContent=stats.done;document.getElementById('total').textContent=stats.total;let rate=stats.total?Math.round(stats.done/stats.total*100):0;document.getElementById('rate').textContent=rate+'%';document.getElementById('bar').style.width=rate+'%'}
+function openLesson(key){closeQuiz();current=data[key];index=0;document.getElementById('lesson').classList.add('show');document.getElementById('lessonTitle').textContent=current.title;document.getElementById('lessonText').textContent=current.text;renderQuestion();document.getElementById('lesson').scrollIntoView({behavior:'smooth'});}
+function renderQuestion(){answered=false;let q=current.q[index];document.getElementById('questionText').textContent='السؤال '+(index+1)+': '+q[0];document.getElementById('feedback').textContent='';document.getElementById('next').style.display='none';let a=document.getElementById('answers');a.innerHTML='';q[1].forEach((v,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=v;b.onclick=()=>check(i,b);a.appendChild(b)});}
+function check(choice,btn){if(answered)return;answered=true;stats.total++;let q=current.q[index];if(choice===q[2]){stats.points+=10;stats.done++;btn.classList.add('correct');document.getElementById('feedback').textContent='إجابة صحيحة! ممتاز 👏 +10 نقاط';}else{btn.classList.add('wrong');document.querySelectorAll('#answers .answer')[q[2]].classList.add('correct');document.getElementById('feedback').textContent='مش مشكلة! الإجابة الصحيحة موضحة باللون الأخضر. حاول تاني 💪';}saveStats();updateStats();document.getElementById('next').style.display='inline-block';document.getElementById('next').textContent=index===current.q.length-1?'إنهاء الدرس ✓':'السؤال التالي ←';}
+function nextQuestion(){if(index<current.q.length-1){index++;renderQuestion()}else{document.getElementById('questionText').textContent='أحسنت! خلصت الدرس 🎉';document.getElementById('answers').innerHTML='';document.getElementById('feedback').textContent='تقدر تختار مادة تانية وتكمل التعلم.';document.getElementById('next').style.display='none';}}
+function closeLesson(){document.getElementById('lesson').classList.remove('show')}
+function startQuiz(key){closeLesson();quizSubject=key;quizIndex=0;quizScore=0;quizAnswers=[];document.getElementById('quiz').classList.add('show');document.getElementById('quizTitle').textContent='📝 اختبار '+subjectNames[key];document.getElementById('quizResult').innerHTML='';document.getElementById('quizQuestionBox').style.display='block';document.getElementById('quizNext').style.display='inline-block';renderQuizQuestion();document.getElementById('quiz').scrollIntoView({behavior:'smooth'});}
+function renderQuizQuestion(){let list=quizBank[quizSubject],q=list[quizIndex];document.getElementById('quizCounter').textContent='السؤال '+(quizIndex+1)+' من '+list.length;document.getElementById('quizBar').style.width=(quizIndex/list.length*100)+'%';document.getElementById('quizQuestion').textContent=q[0];document.getElementById('quizFeedback').textContent='اختار إجابة واحدة.';document.getElementById('quizNext').disabled=true;document.getElementById('quizNext').textContent=quizIndex===list.length-1?'عرض النتيجة':'السؤال التالي ←';let box=document.getElementById('quizAnswers');box.innerHTML='';q[1].forEach((v,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=v;b.onclick=()=>answerQuiz(i,b);box.appendChild(b)});}
+function answerQuiz(choice,btn){if(quizAnswers[quizIndex]!==undefined)return;let q=quizBank[quizSubject][quizIndex];quizAnswers[quizIndex]=choice;stats.total++;if(choice===q[2]){quizScore++;stats.done++;stats.points+=10;btn.classList.add('correct');document.getElementById('quizFeedback').textContent='إجابة صحيحة! +10 نقاط ⭐';}else{btn.classList.add('wrong');document.querySelectorAll('#quizAnswers .answer')[q[2]].classList.add('correct');document.getElementById('quizFeedback').textContent='الإجابة الصحيحة باللون الأخضر. كمل الاختبار 💪';}saveStats();updateStats();document.getElementById('quizNext').disabled=false;}
+function nextQuizQuestion(){if(quizAnswers[quizIndex]===undefined)return;if(quizIndex<quizBank[quizSubject].length-1){quizIndex++;renderQuizQuestion()}else{showQuizResult()}}
+function showQuizResult(){let list=quizBank[quizSubject],percent=Math.round(quizScore/list.length*100);document.getElementById('quizQuestionBox').style.display='none';document.getElementById('quizNext').style.display='none';document.getElementById('quizCounter').textContent='اكتمل الاختبار';document.getElementById('quizBar').style.width='100%';let review=list.map((q,i)=>{let good=quizAnswers[i]===q[2];return `<div class="reviewItem"><b>${i+1}. ${q[0]}</b><br><span class="${good?'reviewGood':'reviewBad'}">${good?'✓ إجابتك صحيحة':'✗ إجابتك: '+q[1][quizAnswers[i]]}</span><br><span class="reviewGood">الإجابة الصحيحة: ${q[1][q[2]]}</span></div>`}).join('');document.getElementById('quizResult').innerHTML=`<div class="result"><div>🎉 انتهى الاختبار</div><div class="resultScore">${quizScore} / ${list.length}</div><h3>درجتك: ${percent}%</h3><p>${percent>=80?'ممتاز! استمر في التفوق 👏':percent>=50?'أداء جيد، راجع الأسئلة وحاول مرة أخرى 💪':'لا تستسلم! راجع الدرس وأعد المحاولة 🌱'}</p><button class="mainbtn" onclick="startQuiz('${quizSubject}')">إعادة الاختبار ↻</button> <button class="secondary" onclick="closeQuiz()">العودة للمواد</button></div><div class="question"><b>مراجعة الإجابات</b>${review}</div>`;}
+function closeQuiz(){document.getElementById('quiz').classList.remove('show')}
+function addQuizButtons(){document.querySelectorAll('.subject').forEach((card,i)=>{let key=['arabic','english','math','science'][i];let b=document.createElement('button');b.textContent='ابدأ الاختبار 📝';b.style.marginTop='8px';b.style.background='#70e1c1';b.style.color='#10203c';b.style.fontWeight='bold';b.onclick=()=>startQuiz(key);card.appendChild(b)})}
+updateStats();addQuizButtons();
+</script>
+</body>
+</html>
